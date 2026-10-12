@@ -2,7 +2,7 @@
 
 An AI service desk for residential property managers in the GCC, built on Microsoft Foundry. Residents report problems by chat, voice or photo in Arabic or English; AI agents triage the issue, check the lease, raise and approve work orders, and keep the resident updated.
 
-**Status:** v0.1 in progress. Built in public, one release per sprint.
+**Status:** v0.1 released. Built in public, one release per sprint.
 **Demo client:** Contoso Living, a fictional property manager in Dubai. All data in this repository is synthetic.
 
 ## The problem (demo scenario)
@@ -11,7 +11,7 @@ Residents report leaks, AC faults and noise through calls, chat apps, email and 
 
 ## What it does now
 
-- v0.1 (in progress): a resident says hello and the service desk answers through a model deployed in Microsoft Foundry.
+- v0.1: a resident says hello and the service desk answers through a model deployed in Microsoft Foundry.
 
 ## Roadmap
 
