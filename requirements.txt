@@ -1,0 +1,8 @@
+# S00 starter set. Minimums are the versions tested on 8 Oct 2026 with Python 3.13.
+# After your first install, pin exact versions here (`pip freeze` shows them;
+# the tutor helps you pick which to pin).
+streamlit>=1.65.0
+python-dotenv>=1.2.4
+azure-identity>=1.26.0
+azure-ai-projects>=2.8.0
+openai>=3.26.0
