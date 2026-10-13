@@ -1,0 +1,1 @@
+{"id": "T01", "deployment": "ai103model1", "expected_category": "plumbing", "expected_urgency": "emergency", "predicted_category": "plumbing", "predicted_urgency": "emergency", "category_correct": true, "urgency_correct": true, "both_correct": true, "hard": false, "latency_s": 5.797, "input_tokens": 158, "output_tokens": 9, "reasoning_tokens": 0, "error": null}

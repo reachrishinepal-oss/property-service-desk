@@ -22,6 +22,7 @@ Rishi is learning. Code splits into two kinds:
 Rules:
 - Leave the `Decision:` and `Predict:` lines exactly as in the template; Rishi fills them in.
 - Never write code inside a learner zone. Leave the block with its header and `raise NotImplementedError("LZ-xx.n")`.
+- Exception: when Rishi's message says `translate my steps in LZ-xx.n` and the zone's `Steps:` comment holds his own plain-English steps, write code that implements exactly those steps and nothing more: no extra validation, no prompt wording and no parameters he did not state. Keep his `Steps:` comment above the code. If the steps are empty or too vague to code, do not fill the gaps; ask him one plain-language question instead. After writing, list each line of the zone with a one-sentence meaning and ask him to explain them back.
 - Never solve a zone indirectly, for example in a helper function the zone would then call.
 - Solve a zone only when Rishi says "solve LZ-xx.n", then explain it line by line.
 - When new scaffold needs an AI call, create a new learner zone for it (the next free number in the current session) instead of writing the call.
@@ -35,6 +36,7 @@ Learner-zone block (Python):
     # Inputs:  names available at this point
     # Return:  what to return
     # Concept: S02 <concept> | Exam: <skill IDs from EXAM_MAP.md>
+    # Steps:    (Rishi, before coding: your plain-English steps, one per line)
     # Decision: (Rishi, before coding: which client, endpoint, parameter or service, and why)
     # Predict:  (Rishi, before running: the output or error you expect)
     # Stuck?   Ask the tutor: "hint LZ-02.1"
@@ -77,7 +79,7 @@ capstone/
     governance/    guardrails, evaluation, tracing, PII         Evaluation/Reliability, Security/Controls
   mock_systems/    work-order system (SQLite + API), contractor service
   data/            synthetic buildings, leases, rules, media (safe to publish)
-  evals/           evaluation sets and results
+  data/eval/       evaluation sets; run results in data/eval/results/
   tests/
   scripts/         setup check, upload and rebuild scripts
   docs/            ARCHITECTURE.md, adr/, demo/, SERVICE_CHOICES.md and FAILURE_MODES.md (Rishi writes these; never fill them in)
