@@ -61,7 +61,7 @@ def _score_row(deployment: str, row: dict, classify: Classify) -> dict:
         for key in ("input_tokens", "output_tokens", "reasoning_tokens"):
             record[key] = int(result.get(key) or 0)
     except NotImplementedError:
-        # An unfinished learner zone is not a model error: stop the whole run.
+        # An unfinished feature is not a model error: stop the whole run.
         raise
     except Exception as exc:  # noqa: BLE001 - one bad row must not stop the run
         record["latency_s"] = round(time.perf_counter() - start, 3)

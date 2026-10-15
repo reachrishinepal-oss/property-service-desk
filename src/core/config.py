@@ -22,6 +22,7 @@ class Settings:
     project_endpoint: str
     chat_deployment: str
     product_name: str
+    judge_endpoint: str = ""
 
 
 def get_settings() -> Settings:
@@ -36,4 +37,15 @@ def get_settings() -> Settings:
         project_endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
         chat_deployment=os.environ["CHAT_DEPLOYMENT"],
         product_name=os.getenv("PRODUCT_NAME", "Property Service Desk"),
+        judge_endpoint=os.getenv("JUDGE_ENDPOINT", ""),
     )
+
+
+def get_judge_endpoint() -> str:
+    """Return JUDGE_ENDPOINT, or explain that it is missing (only the eval runner needs it)."""
+    endpoint = get_settings().judge_endpoint
+    if not endpoint or "<" in endpoint:
+        raise RuntimeError(
+            "Missing setting in .env: JUDGE_ENDPOINT. Copy it from .env.example and fill in the judge's endpoint."
+        )
+    return endpoint

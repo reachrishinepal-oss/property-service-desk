@@ -33,7 +33,7 @@ if st.button("Send", type="primary"):
             reply = first_reply(message)
         st.chat_message("assistant").write(reply)
     except NotImplementedError as todo:
-        st.info(f"Next step: finish learner zone {todo} in the code, then press Send again.")
+        st.info(f"This feature is not built yet ({todo}).")
     except RuntimeError as problem:
         st.warning(str(problem))
     except Exception as error:  # show anything else plainly so it can go to the tutor

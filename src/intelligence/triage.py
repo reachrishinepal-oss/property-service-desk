@@ -17,16 +17,7 @@ URGENCIES = ("emergency", "urgent", "routine")
 
 def classify_request(deployment: str, text: str) -> dict:
     """Ask one deployment for the category and urgency of one resident message."""
-    # ── LEARNER ZONE LZ-01.1 ──────────────────────────────────────────────
-    # Goal:    Send one resident message to the given deployment with the
-    #          Responses API and return the category and urgency it chooses
-    #          (one of CATEGORIES and URGENCIES), plus token usage.
-    # Inputs:  client (src.core.foundry.get_openai_client()), deployment, text,
-    #          CATEGORIES, URGENCIES
-    # Return:  a dict with keys category (str), urgency (str), input_tokens (int),
-    #          output_tokens (int), reasoning_tokens (int, 0 if the response
-    #          gives none)
-    # Concept: S01 model choice evaluation | Exam: 1.1.a, 2.1.a, 2.1.d
+    # AI-103 1.1.a, 2.1.d: ask one deployment to label a resident message, so models can be compared on the same answer key; token counts give the cost.
     # Steps:    1. Give the model the resident's message plus the allowed categories and urgencies.
     #            2. Call the service through the existing client, with the deployment name in the
     #               model= slot so the right model answers.
@@ -37,7 +28,6 @@ def classify_request(deployment: str, text: str) -> dict:
     # Decision: Send the resident message with the deployment name of the model from my resource.
     #           (Client: the project's OpenAI client; the deployment name goes in model=.)
     # Predict:  ai103model1 answers a fixed reply: Category: plumbing, Urgency: emergency
-    # Stuck?   Ask the tutor: "hint LZ-01.1"
     client = get_openai_client()
     instructions = (
         "You triage resident messages for Contoso Living, a property manager in Dubai.\n"
@@ -65,4 +55,3 @@ def classify_request(deployment: str, text: str) -> dict:
         "output_tokens": usage.output_tokens,
         "reasoning_tokens": (details.reasoning_tokens if details else 0) or 0,
     }
-    # ── END LEARNER ZONE ─────────────────────────────────────────────────
