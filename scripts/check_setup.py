@@ -23,6 +23,7 @@ MINIMUMS = {
     "azure-identity": "1.26.0",
     "azure-ai-projects": "2.8.0",
     "openai": "3.26.0",
+    "azure-ai-evaluation": "1.18.8",
 }
 results: list[tuple[str, bool, str]] = []
 
@@ -70,6 +71,9 @@ if env_path.exists():
     check("Project endpoint format", shape_ok, "ok" if shape_ok else "expected https://<resource>.services.ai.azure.com/api/projects/<project>")
     deployment = values.get("CHAT_DEPLOYMENT") or ""
     check("Chat deployment name set", bool(deployment) and "<" not in deployment, "ok" if deployment and "<" not in deployment else "set CHAT_DEPLOYMENT")
+    judge = values.get("JUDGE_ENDPOINT") or ""
+    judge_ok = judge.startswith("https://") and "<" not in judge
+    check("Judge endpoint set", judge_ok, "ok" if judge_ok else "set JUDGE_ENDPOINT (see .env.example)")
 
 # 5. .env ignored by Git
 if shutil.which("git") and (REPO_ROOT / ".git").exists():

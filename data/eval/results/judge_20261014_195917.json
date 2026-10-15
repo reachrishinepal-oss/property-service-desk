@@ -1,0 +1,229 @@
+{
+  "rows": [
+    {
+      "id": "T01",
+      "query": "Water is pouring through my bathroom ceiling light right now, the floor is already flooded and it's spreading into the hallway. I think the flat upstairs has a burst pipe. Apartment 1507, Contoso Heights Tower A. Please send someone immediately!",
+      "response": "Thank you for reporting this urgent issue. We have alerted the maintenance team for immediate attention at Apartment 1507, Contoso Heights Tower A. Someone will contact you shortly to confirm. Please stay safe.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly addresses the emergency request: it acknowledges urgency, confirms notifying maintenance for immediate attention at the correct apartment, and sets expectation of follow-up. It’s specific and timely. Minor omissions include actionable safety guidance or an ETA, but overall it’s fully relevant.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The response directly acknowledges the urgent situation, specifies an immediate action taken (alerting the maintenance team), restates the location for clarity, and outlines the next step (someone will contact shortly). The sentences follow a logical order—acknowledgment, action, follow-up, safety note—and transitions are clear and easy to follow. While concise and not highly elaborate, it remains coherent and addresses the request. It doesn’t show exceptional sophistication or detailed guidance, so it fits a solid coherent rating rather than the highest level.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, concise, and grammatically correct throughout. It uses appropriate and varied vocabulary (e.g., \"urgent issue,\" \"immediate attention,\" \"contact you shortly\") and maintains coherence and logical flow across sentences. The sentences are well-structured, though mostly straightforward and not particularly complex or stylistically sophisticated. There are no errors that impede understanding. This aligns with Proficient Fluency: well-articulated, smooth, and cohesive, but not demonstrating the level of complexity and nuance typical of Exceptional Fluency."
+    },
+    {
+      "id": "T02",
+      "query": "السلام عليكم، حنفية المطبخ تنقط من كم يوم. مو مستعجل بس ياريت أحد يمر يشوفها لما يكون عندكم وقت. شقة 1204، كونتوسو هايتس.",
+      "response": "وعليكم السلام، شكراً لإبلاغنا. سنقوم بإبلاغ فريق الصيانة وسيتم التواصل معك لتأكيد الموعد المناسب لفحص الحنفية. شكرًا لصبرك.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the reported leaking kitchen faucet, thanks the user, and states that maintenance will be notified and will contact the user to schedule a suitable time, matching the non-urgent request. It’s clear and sufficient without extraneous details.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports a non-urgent dripping kitchen faucet and provides location details, asking someone to check it when convenient. The response acknowledges the message, thanks the sender, states a clear next step (notifying maintenance), and explains that they will contact the sender to schedule a suitable time, concluding with appreciation for patience. The ideas are logically ordered (acknowledgment → action → next contact step → thanks), with clear connections and no abrupt jumps. While concise and coherent, it does not explicitly reference the provided apartment/location details, which would further strengthen alignment, but this omission does not significantly impact coherence. Overall, the response flows smoothly and directly addresses the query.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is written in clear, formal Arabic with correct grammar and appropriate politeness markers. It uses coherent and cohesive sentences, varies structure (greeting, acknowledgment, action plan, and closing), and maintains a smooth flow. Vocabulary is appropriate and professional, though not particularly sophisticated. There are no noticeable errors that hinder understanding. While very well-articulated, it does not exhibit the level of complexity or nuanced, sophisticated expression typical of an exceptional (5) rating. Therefore, it aligns best with Proficient Fluency."
+    },
+    {
+      "id": "T03",
+      "query": "Our toilet is completely blocked and plunging didn't help. It's a studio so it's the only toilet we have. Unit 410, Contoso Marina Residence.",
+      "response": "Thank you for informing us about the blocked toilet in your unit 410. We will notify a technician to inspect the issue and someone will contact you soon to confirm the details.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the blocked toilet, references the correct unit, and outlines next steps (dispatching a technician and follow-up). It is relevant and sufficient, though it lacks a specific timeframe or urgent escalation details.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports an urgent maintenance issue (a fully blocked toilet in a single-toilet studio) and provides location details (Unit 410, Contoso Marina Residence). The response acknowledges the issue, references the unit correctly, and outlines a clear next step (notifying a technician and following up). The sentences are logically connected and easy to follow, with a straightforward progression from acknowledgment to action. While it could address urgency or provide interim guidance, these are completeness concerns rather than coherence issues. Overall, the response is organized and coherent, though not exceptionally sophisticated.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, coherent, and grammatically correct. It uses appropriate, professional vocabulary and maintains a logical flow: acknowledgment of the issue, next steps (notifying a technician), and a follow-up action (someone will contact soon). Sentence structure is varied enough for a brief message, though there is a minor phrasing awkwardness in \"in your unit 410,\" which could be slightly improved (e.g., \"in unit 410\" or \"in your unit, 410\"). Overall, it meets the criteria for proficient fluency without the level of sophistication or complexity required for exceptional fluency."
+    },
+    {
+      "id": "T04",
+      "query": "The socket behind the TV just sparked and there's a smell of burning plastic. I switched off the main breaker but I'm scared to turn it back on. Villa 22, Contoso Gardens.",
+      "response": "Thank you for informing us. Please keep the breaker off for safety. We will have a technician check the socket and contact you soon to confirm the next steps.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly addresses the user’s electrical hazard, advises keeping the breaker off, and commits to sending a technician, aligning with the user’s safety concern and provided location. It’s clear and actionable, though it could add urgent safety cautions or timelines.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports an electrical hazard (spark, burning smell), notes the user turned off the main breaker, and provides a location. The response acknowledges the report, gives a clear safety instruction to keep the breaker off, and states a logical next step (dispatching a technician and contacting the user). The ideas are presented in a logical sequence: acknowledgment, safety guidance, and next steps. Transitions are straightforward and the message is easy to follow. While concise, it directly addresses the user's concern without disjointed or abrupt shifts. It doesn't exhibit particularly sophisticated structure, but it is clearly coherent and organized.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response consists of three concise sentences that are grammatically correct and coherent. It acknowledges the message, provides a clear safety instruction, and outlines the next steps in a logical sequence. The vocabulary is appropriate and professional, and the sentence structures show some variety (statement, imperative with rationale, and future commitment). While the text flows smoothly and is easy to understand, it does not exhibit the level of sophistication or nuanced expression typical of exceptional fluency. Therefore, it fits best under Proficient Fluency."
+    },
+    {
+      "id": "T05",
+      "query": "مرحبا، نص الشقة ما فيها كهرباء من الصبح، والقاطع كل ما أرجعه يطيح مرة ثانية. الثلاجة شغالة بس المكيف في غرفة النوم طافي. شقة 807، كونتوسو مارينا ريزيدنس.",
+      "response": "مرحبًا، شكرًا لإبلاغنا. سنرسل فريق الصيانة للتحقق من المشكلة في أقرب وقت ممكن. سيتم التواصل معك لتأكيد التفاصيل. شكراً لصبرك.",
+      "relevance": 4.0,
+      "relevance_reason": "The user reports a partial power outage and a tripping breaker with apartment details. The response acknowledges the issue, commits to sending maintenance promptly, and notes follow-up contact. It directly addresses the report but is generic and lacks immediate safety guidance or troubleshooting steps.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports a specific electrical issue in an apartment, describing symptoms (breaker tripping, fridge working, AC off) and providing the unit and building. The response acknowledges the report, states a clear next step (sending maintenance), and mentions follow-up contact. The ideas are presented in a logical order: acknowledgment, action plan, and communication update, with smooth transitions. While it doesn’t reference the specific details from the query (like unit number or symptoms), the response remains clear and easy to follow. Therefore, it is coherent and organized, though not exceptionally detailed or sophisticated.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is in Arabic and reads as a polite, professional acknowledgement with clear next steps. Grammar and punctuation are correct, and the tone is appropriate. Sentences are coherent and logically ordered: thanking the user, stating an action (sending a maintenance team), indicating follow-up contact, and expressing appreciation for patience. Vocabulary is adequate and precise for the context, though not especially varied or sophisticated. The structures are clear and well-formed but not particularly complex. Overall, it flows smoothly and is easily understood, aligning best with Proficient Fluency rather than Exceptional due to its straightforwardness."
+    },
+    {
+      "id": "T06",
+      "query": "The ceiling light in the guest bathroom flickers for a few seconds every time I switch it on. Not a big deal, just wanted to log it. Apartment 903, Contoso Heights Tower B.",
+      "response": "Thank you for letting us know about the flickering light in the guest bathroom of apartment 903, Contoso Heights Tower B. We will have a technician check it and someone will contact you to confirm the details.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T07",
+      "query": "The AC has stopped cooling completely, it's blowing warm air and it's 44 degrees outside. I have a 1 year old at home and the flat is getting really hot. Unit 1802, Contoso Heights Tower A.",
+      "response": "Thank you for informing us about the AC issue in Unit 1802, Contoso Heights Tower A. We understand the urgency, especially with a young child at home. A technician will be assigned to check the unit and will contact you to confirm the appointment.",
+      "relevance": 4.0,
+      "relevance_reason": "The response acknowledges the urgent AC outage, references the correct unit and location, and commits to assigning a technician and contacting the resident. It’s relevant and action-oriented, but lacks specifics like ETA, emergency prioritization, or interim safety guidance, making it sufficient but not comprehensive.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The response acknowledges the reported problem and restates key details (AC issue in Unit 1802, Contoso Heights Tower A), then expresses understanding of the urgency, and provides a clear next step (a technician will be assigned and will contact to confirm the appointment). The ideas are presented in a logical order with clear connections and no contradictions, making it easy to follow. However, it is brief and lacks additional transitional detail or structured guidance (e.g., timelines or interim steps), so while coherent, it doesn't demonstrate the heightened sophistication and seamless flow characteristic of a top-tier coherent response.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, concise, and grammatically correct throughout. It uses appropriate professional vocabulary and maintains a polite, empathetic tone. Sentences are well-structured and coherent, with a natural flow: an acknowledgment, an expression of understanding, and a clear next step. While the language is polished and cohesive, it does not exhibit especially sophisticated vocabulary or highly varied, complex sentence structures that would elevate it to exceptional fluency. Therefore, it aligns best with Proficient Fluency."
+    },
+    {
+      "id": "T08",
+      "query": "AC in the master bedroom isn't cooling properly since yesterday, and tonight there's a kind of burning smell coming out of the vent when it runs. I turned it off for now. Apartment 2105, Contoso Marina Residence.",
+      "response": "Thank you for informing us. We will notify the maintenance team about the AC issue in your master bedroom. Someone will contact you soon to confirm the next steps.",
+      "relevance": 4.0,
+      "relevance_reason": "The response acknowledges the AC problem, references the master bedroom, and indicates maintenance will be notified with a follow-up, which aligns with the user's report. However, it lacks urgency or safety guidance regarding the burning smell and omits specifics like timing or access instructions, making it sufficient but not comprehensive.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports an AC malfunction with a burning smell, includes the action taken (turned it off), and provides the apartment details. The response acknowledges receipt, states that maintenance will be notified, and indicates follow-up will occur. The ideas are presented in a logical order (acknowledgment → action → next steps) and are easy to follow. While the response could include safety guidance or specifics, coherence evaluates clarity and logical flow rather than completeness. The response is clear and orderly, but not exceptionally detailed or sophisticated in transitions, so it fits as a coherent response rather than a highly coherent one.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is grammatically correct, concise, and professional. It uses clear and coherent sentences with appropriate structure and transitions. Vocabulary is suitable for the context, though not particularly sophisticated or varied. There are no errors that hinder understanding, and the message flows smoothly. While the text is polished, it lacks the complexity and nuanced expression typical of exceptional fluency, so a proficient score is appropriate."
+    },
+    {
+      "id": "T09",
+      "query": "Hi, the AC in the living room is working بس فيه ريحة رطوبة وغبار when it starts. Can someone clean the filter? مو مستعجل، thanks. Villa 9, Contoso Gardens.",
+      "response": "Hello, thank you for informing us about the AC issue in your living room at Villa 9, Contoso Gardens. We will have a technician check and clean the filter. Someone will contact you to confirm the details.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the AC issue and location, confirms arranging a technician to check and clean the filter, and mentions follow-up contact. It addresses the user's request effectively. Minor omission: it doesn't reflect the 'not urgent' note or propose scheduling options.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports an AC odor issue, requests a filter cleaning, notes it's not urgent, and provides the location. The response acknowledges the issue and location, states a technician will check and clean the filter, and mentions follow-up contact. The ideas are presented in a logical order: acknowledgment, action plan, and next steps. Sentences connect clearly and are easy to follow. While it doesn't explicitly note the 'not urgent' aspect, this does not affect coherence. Overall, the response is well-structured and coherent, though not exceptionally sophisticated.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, polite, and grammatically correct. It uses coherent sentences with appropriate structure and a logical flow: acknowledgment of the issue, planned action, and next steps. Vocabulary is professional and adequate for the context, though not particularly sophisticated. There are no noticeable errors, and the message is easily understandable. However, it does not display the level of complex sentence variety or nuanced, eloquent expression characteristic of exceptional fluency. Therefore, it aligns best with proficient fluency."
+    },
+    {
+      "id": "T10",
+      "query": "الثلاجة توقفت عن التبريد تماماً منذ الليلة الماضية وبدأ الطعام يفسد. الثلاجة من ضمن أجهزة الشقة المؤجرة. الرجاء إرسال فني اليوم إن أمكن. الوحدة 302، مبنى كونتوسو جاردنز.",
+      "response": "شكرًا لإبلاغنا. سنقوم بإبلاغ فريق الصيانة فورًا، وسيتم تواصل شخص مختص معكم لتأكيد موعد الفحص.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T11",
+      "query": "The rubber seal on the washing machine door is torn and a little water drips out at the end of each cycle. Still usable for now. Apartment 611, Contoso Heights Tower B.",
+      "response": "Thank you for reporting the issue with the washing machine seal in apartment 611, Contoso Heights Tower B. A maintenance person will contact you soon to confirm the details.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the reported washing machine issue, mirrors the apartment details, and sets clear next steps by promising maintenance contact. It’s fully on-topic and sufficient, though it could add timing or interim safety/use guidance for a more comprehensive reply.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports a torn washing machine seal causing minor leakage and provides the exact location (Apartment 611, Contoso Heights Tower B). The response acknowledges the issue, mirrors the key details (washing machine seal, apartment and building), and clearly states the next step (maintenance will contact to confirm details). The sentences are logically ordered and connected, making it easy to follow. While coherent and directly addressing the query, the response is brief and does not exhibit the more sophisticated transitions or depth that would merit a top score.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, concise, and polite, with correct grammar and punctuation. It uses appropriate and professional vocabulary (e.g., 'reporting,' 'maintenance person,' 'confirm the details') and maintains coherence by moving logically from acknowledgment to next steps. The sentences are well-structured and easily readable, with no grammatical errors. However, the language and sentence structures are straightforward and do not demonstrate the sophisticated variety or nuanced expression characteristic of an exceptional level. Therefore, it best fits the Proficient Fluency category."
+    },
+    {
+      "id": "T12",
+      "query": "I've seen a few cockroaches in the kitchen at night over the past week, mostly near the sink. Could you book the pest control visit? Unit 1109, Contoso Marina Residence.",
+      "response": "Thank you for reporting this. I will notify the pest control team about the issue in Unit 1109, Contoso Marina Residence. Someone will contact you soon to confirm the visit details.",
+      "relevance": 3.0,
+      "relevance_reason": "The response acknowledges the issue, references the correct unit, and initiates action by notifying pest control. However, it doesn’t actually book an appointment or gather preferred times, offering only a handoff and vague next steps, leaving the user's booking request partially unmet.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The user requested booking a pest control visit for Unit 1109 due to cockroaches. The response acknowledges the issue, references the correct unit and property, and states a clear next action—informing the pest control team—followed by the next step that someone will contact to confirm details. The ideas are presented in a logical order (acknowledgment → action → next steps) and are easy to follow. While concise and lacking elaborate transitions or detail, it remains clearly structured and directly addresses the request, showing good coherence.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is present and clearly written. Grammar and punctuation are correct, with no noticeable errors. The vocabulary is appropriate and professional (e.g., \"notify,\" \"issue,\" \"contact,\" \"confirm\"), though not particularly sophisticated. The sentences are coherent and flow logically, but they are mostly simple declarative statements without complex or varied structures. Overall readability is high, and the message is concise and clear. This aligns with proficient fluency rather than exceptional, as it lacks the nuanced vocabulary and complex sentence variety typical of a top-tier score."
+    },
+    {
+      "id": "T13",
+      "query": "The neighbours in 1403 have loud parties on Thursday and Friday nights until 3am. I've asked them politely but it keeps happening. Can building management remind them of the community quiet hours? Apartment 1303, Contoso Heights Tower A.",
+      "response": "Thank you for letting us know about the noise issue in apartment 1403. We will remind the neighbors about the community quiet hours. Someone from management will confirm with you shortly.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T14",
+      "query": "There's been a loud continuous beeping from the flat next door for about 20 minutes, not a chirp, a constant alarm. I knocked and nobody answers. It's really annoying, can someone sort it out? Apartment 1710, Contoso Heights Tower B.",
+      "response": "Thank you for letting us know about the alarm at apartment 1710, Contoso Heights Tower B. We will notify the maintenance team, and someone will contact you as soon as possible to address this.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the reported alarm, references the correct apartment and building, and commits to notifying maintenance and arranging contact. It addresses the user's request to ‘sort it out.’ However, it lacks additional details like urgency, timelines, or safety guidance, limiting it from being comprehensive.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The response directly acknowledges the reported issue and repeats the key details (apartment number and building), indicating it understood the query. It then states a clear next step (notifying maintenance) and sets an expectation that someone will contact the reporter. The sentences are complete, logically ordered, and easy to follow, making the response coherent. However, it is brief and lacks more nuanced transitions or a comprehensive plan (e.g., acknowledging urgency or potential safety concerns), so while coherent, it does not reach the level of exceptional thoroughness and flow expected for a top score.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, concise, and grammatically correct with no noticeable errors. It uses an appropriate, professional tone and maintains coherence across two well-structured sentences. The vocabulary is suitable and varied enough for the context, and there is a compound sentence that shows some structural complexity. However, the language is straightforward rather than sophisticated, and it doesn't exhibit the nuanced expression or intricate sentence variety characteristic of exceptional fluency. Therefore, it aligns best with Proficient Fluency."
+    },
+    {
+      "id": "T15",
+      "query": "كرت الدخول حقي ما يفتح بوابة الباركنج ولا باب اللوبي من أمس. اضطريت أنتظر الحارس عشان يفتح لي. أبي كرت جديد بأسرع وقت. شقة 505، كونتوسو مارينا ريزيدنس.",
+      "response": "شكرًا لإبلاغنا بالمشكلة. سنقوم بإبلاغ الفريق المختص، وسيتم التواصل معك لتأكيد الإجراءات لاستبدال كرت الدخول. إذا احتجت مساعدة فورية، يُرجى التواصل مع الحارس.",
+      "relevance": 3.0,
+      "relevance_reason": "The response acknowledges the card issue, indicates escalation to the relevant team, and offers interim help via the guard, which is on-topic. However, it’s vague about urgency, lacks an ETA, doesn’t confirm apartment details, and omits next steps (verification, fees, pickup/delivery), making it incomplete.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports a malfunctioning access card that doesn't open the parking gate or lobby door, mentions having to wait for the guard, requests a new card urgently, and provides the apartment and residence details. The response acknowledges the issue, states that the relevant team will be notified, indicates they will contact the user to confirm replacement procedures, and offers an immediate assistance fallback (contact the guard). The ideas are presented in a logical order: acknowledgment → action plan → next steps → immediate workaround. Transitions are clear and the response directly addresses the user's request. While it could be more specific about timing or confirm the provided apartment details, the coherence—organization and flow—is solid and easy to follow.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is written in clear, formal Arabic with correct grammar and coherent, logically connected sentences. It uses appropriate vocabulary and structures such as future passive (سيتم التواصل معك) and purpose clauses (لتأكيد الإجراءات لاستبدال كرت الدخول). The message flows smoothly and is easy to understand. While well-crafted, it does not exhibit particularly sophisticated or varied sentence structures or nuanced vocabulary that would elevate it to exceptional fluency. Therefore, it aligns best with Proficient Fluency."
+    },
+    {
+      "id": "T16",
+      "query": "The side entrance door near the bin room in Tower B doesn't close or lock anymore. Anyone can walk in from the street without passing security. Reporting from Apartment 207.",
+      "response": "Thank you for reporting this issue with the side entrance door near the bin room in Tower B. We understand the security concern and will inform the maintenance team immediately. Someone will contact you soon to confirm the details.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the reported security issue, references the specific location, and indicates immediate escalation to maintenance with a promised follow-up. It’s relevant and sufficient for an initial report. However, it lacks added guidance (e.g., interim safety measures or ETA), so it’s not comprehensive.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The response acknowledges the specific issue (side entrance door near the bin room in Tower B), mirrors the security concern, and outlines a clear sequence of actions: informing maintenance and arranging follow-up contact. The sentences connect logically—gratitude, recognition of the problem, immediate action, and next steps—making it easy to follow. While concise and straightforward, it lacks the depth or nuanced transitions characteristic of an exceptionally coherent response. Therefore, it fits well as a coherent and well-organized reply rather than an exceptionally sophisticated one.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is grammatically correct and coherent, with clear and professional phrasing. It uses appropriate vocabulary and maintains a smooth flow across sentences. The sentence structures are well-formed but relatively straightforward, without notably sophisticated or varied constructs. There are no errors that impede understanding, and the message is cohesive. While strong and polished, it does not exhibit the level of complexity and nuanced expression typical of the highest tier."
+    },
+    {
+      "id": "T17",
+      "query": "Two of the treadmills in the residents' gym have been showing an error for a week, and the light above the pool shower is out. Contoso Gardens clubhouse.",
+      "response": "Thank you for informing us about the treadmill errors and the pool shower light issue at Contoso Gardens clubhouse. We will notify the maintenance team, and someone will get back to you to confirm the details.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T18",
+      "query": "Both lifts in Tower A have been out of service since this morning. My elderly father lives with us on the 26th floor and can't use the stairs. When will they be fixed?",
+      "response": "Thank you for informing us. We understand the urgency and have notified the maintenance team. A staff member will contact you soon to provide further details.",
+      "relevance": 2.0,
+      "relevance_reason": "The response acknowledges the issue and escalates it, but doesn't answer the user's core question about when the lifts will be fixed. It provides no ETA or concrete details, only a vague promise of follow-up.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query asks for a specific timeline for when the lifts will be fixed, emphasizing urgency due to an elderly resident on the 26th floor. The response acknowledges the issue, expresses understanding of urgency, states that maintenance has been notified, and indicates that a staff member will follow up. The ideas are logically ordered: acknowledgement, empathy, action taken, and next steps. Transitions are clear and the message flows smoothly. However, it does not directly answer the \"when\" question or provide an estimated timeframe, which slightly weakens the direct alignment to the query. Overall, it remains coherent and easy to follow, but not exceptionally thorough.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is clear, concise, and grammatically correct. It uses appropriate, professional vocabulary and connects ideas logically across three sentences. The structure is coherent and flows smoothly. While effective, the language is straightforward rather than sophisticated, and the sentence structures are not notably complex. This aligns with proficient fluency rather than exceptional."
+    },
+    {
+      "id": "T19",
+      "query": "I was charged AED 750 for an AC maintenance visit on this month's statement, but the AC is still leaking water onto the bedroom floor after the technician left. Why am I paying for a repair that didn't work? Apartment 1012, Contoso Heights Tower A.",
+      "response": "Thank you for letting us know about the issue with your AC. We apologize for the inconvenience. A technician will be in touch to follow up and confirm the next steps.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T20",
+      "query": "أود الاستفسار عن إجراءات تجديد عقد الإيجار، حيث ينتهي العقد في نهاية الشهر القادم. هل سيتغير مبلغ الإيجار؟ وما المستندات المطلوبة لتسجيل العقد الجديد؟ الشقة 1408، كونتوسو هايتس.",
+      "response": "شكرًا لتواصلك معنا بخصوص تجديد عقد الإيجار لشقتك في كونتوسو هايتس. سيتم مراجعة مبلغ الإيجار من قبل فريق الإدارة، وسيتواصل معك الشخص المسؤول لتأكيد التفاصيل. بالنسبة للمستندات المطلوبة، سنزودك بها أيضًا عند التواصل. هل تود أن نتصل بك عبر الهاتف أو البريد الإلكتروني؟",
+      "relevance": 2.0,
+      "relevance_reason": "The user asked about renewal procedures, potential rent changes, and required documents. The response is on-topic but gives no concrete details, merely stating management will review and contact later and asking for contact preference. It’s vague and doesn’t answer the questions.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The QUERY asks clearly about the renewal procedures, potential rent changes, and required documents. The RESPONSE acknowledges the renewal context (apartment and location), addresses the rent question by stating it will be reviewed, and mentions that document requirements will be provided upon follow-up. The ideas are presented in a logical order: acknowledgment, rent review process, documents, and a closing question about preferred contact method. Sentences connect smoothly and are easy to follow. However, it defers specifics and does not thoroughly answer the questions, which reduces the completeness aspect associated with top-tier coherence. Overall, it is coherent and organized but not exceptionally thorough.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The RESPONSE is in Arabic and presents a clear, formal customer-service message about renewing a lease. Grammar and syntax are accurate, with proper use of formal structures and punctuation. The vocabulary is appropriate and varied for the context (e.g., references to reviewing rent, management team contact, and document provision), and sentences are well-structured with logical progression. Cohesion is maintained across sentences, and the tone is polite and professional. While the writing is smooth and coherent, it does not employ particularly sophisticated or nuanced vocabulary or highly complex sentence structures that would indicate exceptional fluency. Therefore, it aligns best with Proficient Fluency (4)."
+    }
+  ],
+  "metrics": {
+    "relevance": 3.6,
+    "coherence": 4.0,
+    "fluency": 4.0
+  }
+}

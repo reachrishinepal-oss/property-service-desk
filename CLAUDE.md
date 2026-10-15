@@ -1,6 +1,6 @@
 # Build rules for this repository
 
-For Claude Code in VS Code and for the AI-103 Studio tutor. Read this before writing any code here.
+For Claude Code in VS Code and for the AI103 Agent (Rishi's course tutor). Read this before writing any code here.
 
 ## What this is
 
@@ -10,39 +10,23 @@ It is also the capstone of Rishi's AI-103 course. Every feature exercises an exa
 
 ## How Rishi uses you
 
-He vibe-codes the scaffold with you. Each session the AI-103 Studio tutor gives him a scaffold brief (what to build, which files, constraints, and the learner zones to leave empty); he pastes it here. Build exactly that, keep changes small and reviewable, then summarise what changed file by file so he can review the diff before committing.
+Rishi is the product owner and solution designer; you are the developer. He writes his own instructions to you, feature by feature, and the product is built from scratch from them. You write all of the code, including the AI calls: Foundry and Azure SDK clients, model and agent calls, prompts, tool schemas, retrieval, evaluations and safety settings. He runs it, reads your summary, and explains the feature in his own words to the tutor. He does not write or fill in code, and you never ask him what a line of code should be.
 
-## The learner-zone contract (the most important rule)
+## Rules
 
-Rishi is learning. Code splits into two kinds:
-
-1. **Scaffold, which you write** complete and runnable: UI, mock systems, synthetic data, configuration, logging, glue code, tests, scripts, docs.
-2. **Learner zones, which he writes:** any code that exercises an AI-103 skill. That means Foundry and Azure SDK clients and authentication, model and agent calls, prompts and instructions, tool schemas and tool loops, agent and workflow definitions, retrieval and index queries, Language, Speech, Translator, Vision, Content Understanding and Document Intelligence calls, evaluation runs, and safety settings.
-
-Rules:
-- Leave the `Decision:` and `Predict:` lines exactly as in the template; Rishi fills them in.
-- Never write code inside a learner zone. Leave the block with its header and `raise NotImplementedError("LZ-xx.n")`.
-- Never solve a zone indirectly, for example in a helper function the zone would then call.
-- Solve a zone only when Rishi says "solve LZ-xx.n", then explain it line by line.
-- When new scaffold needs an AI call, create a new learner zone for it (the next free number in the current session) instead of writing the call.
-- The scaffold must run with zones unfinished: catch `NotImplementedError` at the UI edge and show "Next step: LZ-xx.n".
-
-Learner-zone block (Python):
-
-```python
-    # ── LEARNER ZONE LZ-02.1 ──────────────────────────────────────────────
-    # Goal:    what the code must achieve, in one or two lines
-    # Inputs:  names available at this point
-    # Return:  what to return
-    # Concept: S02 <concept> | Exam: <skill IDs from EXAM_MAP.md>
-    # Decision: (Rishi, before coding: which client, endpoint, parameter or service, and why)
-    # Predict:  (Rishi, before running: the output or error you expect)
-    # Stuck?   Ask the tutor: "hint LZ-02.1"
-    raise NotImplementedError("LZ-02.1")
-    # ── END LEARNER ZONE ─────────────────────────────────────────────────
-```
-
-Numbering: `LZ-<session>.<n>`, for example `LZ-06.2`. Portal steps are `PZ-<session>.<n>`; they live in the session notes, not in code.
+- **Build exactly what he asked, small.** The least code that does it, about 150 lines of new code without tests unless he says otherwise. No extra options, flags, thresholds, reports or abstractions; tests only for real logic. If the request seems to need more, say so before building.
+- **Use the approach he names.** If he says gpt-4.1-mini, keyless sign-in, the project endpoint or hybrid search, use exactly that; don't swap in your own preference. If his instruction leaves a real design choice open (which service, model, parameter or approach), ask him one plain question before building rather than choosing silently.
+- **Setup and Azure are his.** Never edit `.env`, create or change Azure or Foundry resources, assign roles or run `az` commands that change anything. When something is missing (an endpoint, a deployment, a role), tell him exactly what is needed and where in the portal, and wait.
+- **Tag every AI-103 concept in the code.** Directly above each piece of code that uses an exam skill, add one comment line: `# AI-103 <skill id>: <what this does and why, in plain English>`, for example `# AI-103 1.3.d: sign in with your Azure identity (no API key); the Foundry User role allows the call`. Skill IDs come from `../course/EXAM_MAP.md`. Keep each such piece in one clearly named function so it can be pointed at.
+- **Readable over clever.** Plain functions, clear names, short files. Rishi reads code at the level of "what does this function do", not line by line.
+- **Finish every change with a plain-English summary** in this shape, with no jargon left unexplained:
+  1. What it does now, in two sentences a client would understand.
+  2. AI-103 concepts used: skill ID, one-line meaning, and where (file and function).
+  3. How to run it: the exact command, and what he should see.
+  4. Any design choice you made yourself that the brief didn't settle (a parameter, a default, a threshold), so he can confirm or change it.
+  5. Files changed, one line each.
+- Older functions keep Rishi's `Steps:`, `Decision:` and `Predict:` comments under their `# AI-103` tag; leave them as they are.
+- The app must keep running while a feature is half-built: catch errors at the UI edge and show a plain message.
 
 ## File header (every Python file)
 
@@ -77,10 +61,10 @@ capstone/
     governance/    guardrails, evaluation, tracing, PII         Evaluation/Reliability, Security/Controls
   mock_systems/    work-order system (SQLite + API), contractor service
   data/            synthetic buildings, leases, rules, media (safe to publish)
-  evals/           evaluation sets and results
+  data/eval/       evaluation sets; run results in data/eval/results/
   tests/
   scripts/         setup check, upload and rebuild scripts
-  docs/            ARCHITECTURE.md, adr/, demo/, SERVICE_CHOICES.md and FAILURE_MODES.md (Rishi writes these; never fill them in)
+  docs/            ARCHITECTURE.md, adr/, demo/, SERVICE_CHOICES.md and FAILURE_MODES.md (content comes from Rishi; you may type it up when he asks)
 ```
 
 Folders appear when the session that needs them arrives. Don't create empty ones ahead of time.
@@ -104,5 +88,5 @@ streamlit run src/ui/app.py
 ## Before you finish a change
 
 - Changed Python files compile (`python -m py_compile <file>`); start the app if the UI changed.
-- No learner zone was filled.
+- Every AI-103 concept in the change has its `# AI-103` tag line, and the summary lists them.
 - The README's "What it does now" is still true.
