@@ -11,7 +11,7 @@ Residents report leaks, AC faults and noise through calls, chat apps, email and 
 
 ## What it does now
 
-- v0.2: a resident chats with the service desk over several turns through a model deployed in Microsoft Foundry; each reply shows the input tokens for that turn, and an empty ticket preview panel sits beside the chat.
+- v0.2: a resident chats with the service desk over several turns through a model deployed in Microsoft Foundry; each reply streams in and shows the input tokens for that turn, and a ticket preview card beside the chat (category, urgency, unit, summary) updates after every reply.
 
 ## Roadmap
 

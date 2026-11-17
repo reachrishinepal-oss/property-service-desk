@@ -1,7 +1,7 @@
 """
 PURPOSE: The app's front door: a resident chats with the service desk, with a ticket preview panel beside the chat.
 LAYER:   Integration/Experience
-SESSION: S00 (resident chat page from S02)
+SESSION: S00 (resident chat page and ticket preview card from S02)
 Run:     streamlit run src/ui/app.py   (from the capstone folder, virtual environment active)
 """
 from __future__ import annotations
@@ -17,6 +17,7 @@ if str(REPO_ROOT) not in sys.path:
 import streamlit as st  # noqa: E402
 
 from src.intelligence.resident_chat import stream_reply_to_resident  # noqa: E402
+from src.intelligence.ticket_card import fill_ticket_card  # noqa: E402
 
 st.set_page_config(page_title="Property Service Desk", layout="wide")
 
@@ -33,7 +34,15 @@ chat_column, ticket_column = st.columns([3, 1])
 
 with ticket_column:
     st.subheader("Ticket preview")
-    st.caption("Empty for now. The triage card comes later.")
+    card = st.session_state.get("card")
+    if card:
+        st.markdown(
+            f"**Category:** {card['category']}  \n**Urgency:** {card['urgency']}  \n"
+            f"**Unit:** {card['unit']}  \n**Summary:** {card['summary']}"
+        )
+        st.caption(f"Input tokens for the card: {st.session_state.card_tokens}")
+    else:
+        st.caption("The triage card appears after the first reply.")
 
 with chat_column:
     turn = 0
@@ -56,8 +65,13 @@ with chat_column:
                     result = {}
                     # write_stream shows each piece as it arrives and returns the whole reply when it ends.
                     reply = st.write_stream(stream_reply_to_resident(st.session_state.messages, result))
-            st.session_state.messages.append({"role": "assistant", "content": reply})
+            conversation = st.session_state.messages + [{"role": "assistant", "content": reply}]
+            with st.spinner("Updating the ticket preview..."):
+                card, card_tokens = fill_ticket_card(conversation)
+            st.session_state.messages = conversation
             st.session_state.input_tokens.append(result["input_tokens"])
+            st.session_state.card = card
+            st.session_state.card_tokens = card_tokens
             st.rerun()
         except Exception as error:  # keep the page running and show the problem plainly
             st.session_state.messages.pop()  # drop the unanswered message so the conversation stays in step
