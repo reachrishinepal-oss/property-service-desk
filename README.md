@@ -12,6 +12,7 @@ Residents report leaks, AC faults and noise through calls, chat apps, email and 
 ## What it does now
 
 - v0.2: a resident chats with the service desk over several turns through a model deployed in Microsoft Foundry; each reply streams in and shows the input tokens for that turn, and a ticket preview card beside the chat (category, urgency, unit, summary) updates after every reply.
+- v0.2 (S03): the assistant can look up a resident by unit and raise a real ticket in a mock work-order system (SQLite, 3 invented buildings, 60 units). The app checks every argument before anything is written, and each reply lists its tool calls in a "Tool calls" panel. Replies no longer stream while tools are in use.
 
 ## Roadmap
 
