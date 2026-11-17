@@ -23,6 +23,7 @@ class Settings:
     chat_deployment: str
     product_name: str
     judge_endpoint: str = ""
+    vector_store_id: str = ""  # optional: without it the chat runs without rules search
 
 
 def get_settings() -> Settings:
@@ -38,6 +39,7 @@ def get_settings() -> Settings:
         chat_deployment=os.environ["CHAT_DEPLOYMENT"],
         product_name=os.getenv("PRODUCT_NAME", "Property Service Desk"),
         judge_endpoint=os.getenv("JUDGE_ENDPOINT", ""),
+        vector_store_id="" if "<" in os.getenv("VECTOR_STORE_ID", "<") else os.environ["VECTOR_STORE_ID"],
     )
 
 
