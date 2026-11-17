@@ -1,10 +1,11 @@
 """
-PURPOSE: Send the whole resident conversation to the chat deployment and return the reply and its input tokens.
+PURPOSE: Send the whole resident conversation to the chat deployment and stream the reply back, with its input tokens at the end.
 LAYER:   Intelligence
 SESSION: S02
 """
 from __future__ import annotations
 
+from collections.abc import Iterator
 from pathlib import Path
 
 from src.core.config import get_settings
@@ -19,17 +20,27 @@ def load_system_message() -> str:
     return SYSTEM_MESSAGE_FILE.read_text(encoding="utf-8")
 
 
-def reply_to_resident(messages: list[dict]) -> tuple[str, int]:
-    """Send the full message list and return (reply text, input tokens for this turn)."""
+def stream_reply_to_resident(messages: list[dict], result: dict) -> Iterator[str]:
+    """Send the full message list and yield the reply piece by piece; puts the input tokens in result["input_tokens"] at the end."""
     settings = get_settings()
     client = get_openai_client()
     # AI-103 2.1.a, 2.1.e: one Responses API call on the deployment ai103model1 (model= takes the deployment name), through the keyless project client.
     # Manual chaining: the app keeps the conversation and resends the whole list every turn (no previous_response_id),
     # and the system message goes in instructions= on every call, apart from the conversation.
-    response = client.responses.create(
+    # Streaming: stream=True sends the reply as events while it is being written, so the resident sees text straight away.
+    stream = client.responses.create(
         model=settings.chat_deployment,
         instructions=load_system_message(),
         input=messages,
+        stream=True,
     )
-    # AI-103 2.1.a: usage.input_tokens counts everything sent this turn (instructions plus the whole history), so it grows each turn.
-    return response.output_text, response.usage.input_tokens
+    for event in stream:
+        # AI-103 2.1.a: each response.output_text.delta event carries the next piece of the reply.
+        if event.type == "response.output_text.delta":
+            yield event.delta
+        # AI-103 2.1.a: response.completed is the final event; its usage.input_tokens counts everything sent this turn
+        # (instructions plus the whole history), so it grows each turn. Streaming changes what the resident feels, not the cost.
+        elif event.type == "response.completed":
+            result["input_tokens"] = event.response.usage.input_tokens
+    if "input_tokens" not in result:
+        raise RuntimeError("The reply stopped before it finished (no response.completed event).")

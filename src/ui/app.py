@@ -16,7 +16,7 @@ if str(REPO_ROOT) not in sys.path:
 
 import streamlit as st  # noqa: E402
 
-from src.intelligence.resident_chat import reply_to_resident  # noqa: E402
+from src.intelligence.resident_chat import stream_reply_to_resident  # noqa: E402
 
 st.set_page_config(page_title="Property Service Desk", layout="wide")
 
@@ -44,14 +44,20 @@ with chat_column:
                 st.caption(f"Input tokens this turn: {st.session_state.input_tokens[turn]}")
                 turn += 1
 
+    live_turn = st.container()  # the new turn is drawn here, above the input box, while the reply streams in
     text = st.chat_input("Describe your problem")
     if text:
         st.session_state.messages.append({"role": "user", "content": text})
         try:
-            with st.spinner("The service desk is replying..."):
-                reply, input_tokens = reply_to_resident(st.session_state.messages)
+            with live_turn:
+                with st.chat_message("user"):
+                    st.write(text)
+                with st.chat_message("assistant"):
+                    result = {}
+                    # write_stream shows each piece as it arrives and returns the whole reply when it ends.
+                    reply = st.write_stream(stream_reply_to_resident(st.session_state.messages, result))
             st.session_state.messages.append({"role": "assistant", "content": reply})
-            st.session_state.input_tokens.append(input_tokens)
+            st.session_state.input_tokens.append(result["input_tokens"])
             st.rerun()
         except Exception as error:  # keep the page running and show the problem plainly
             st.session_state.messages.pop()  # drop the unanswered message so the conversation stays in step
