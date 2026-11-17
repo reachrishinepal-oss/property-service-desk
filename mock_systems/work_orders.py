@@ -105,3 +105,11 @@ def insert_ticket(unit: str, category: str, urgency: str, summary: str) -> int:
             " VALUES (?, ?, ?, ?, 'open', ?)",
             (unit, category, urgency, summary, datetime.now().isoformat(timespec="seconds")))
     return cursor.lastrowid
+
+
+def read_tickets() -> list[dict]:
+    """Return every ticket row, oldest first."""
+    with connect() as db:
+        rows = db.execute("SELECT id, unit, category, urgency, summary, status, created_at, closed_at"
+                          " FROM tickets ORDER BY id").fetchall()
+    return [dict(row) for row in rows]
