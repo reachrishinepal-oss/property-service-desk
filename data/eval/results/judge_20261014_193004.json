@@ -1,0 +1,31 @@
+{
+  "rows": [
+    {
+      "id": "T01",
+      "query": "Water is pouring through my bathroom ceiling light right now, the floor is already flooded and it's spreading into the hallway. I think the flat upstairs has a burst pipe. Apartment 1507, Contoso Heights Tower A. Please send someone immediately!",
+      "response": "شكراً لإبلاغنا بهذا الأمر الطارئ. سنبلغ فريق الصيانة فوراً، وسيقوم شخص بالاتصال بك لتأكيد التفاصيل والإجراءات اللازمة. من فضلك حاول إيقاف تشغيل الكهرباء في المنطفة المتضررة للحفاظ على سلامتك.",
+      "relevance": 4.0,
+      "relevance_reason": "The response directly acknowledges the emergency, promises immediate escalation to maintenance, and offers a crucial safety step (switching off electricity). However, it doesn’t explicitly confirm a technician is en route, request/confirm contact details or address, or provide additional containment steps. Overall highly relevant.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports an urgent flooding emergency and requests immediate help. The response acknowledges the emergency, states that the maintenance team will be notified immediately, explains that someone will call to confirm details and procedures, and provides a safety instruction to turn off electricity in the affected area. The ideas are presented in a logical sequence: acknowledgment, immediate action, next steps, and safety guidance. The connections between sentences are clear and easy to follow. While concise and with a minor typographical error, it remains organized and directly addresses the situation, fitting the definition of a coherent response.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is written in clear, formal Arabic with coherent and logically connected sentences. It uses appropriate vocabulary for an urgent situation and includes well-structured sentences that flow smoothly. Grammar and syntax are largely correct, and the message is easy to understand. However, there is a minor typo (\"المنطفة\" instead of \"المنطقة\") and slight stylistic redundancy in \"سيقوم شخص بالاتصال\" where \"سيتصل بك أحد\" might be more concise. These minor issues prevent it from reaching exceptional fluency, but overall it reflects strong proficiency."
+    },
+    {
+      "id": "T02",
+      "query": "السلام عليكم، حنفية المطبخ تنقط من كم يوم. مو مستعجل بس ياريت أحد يمر يشوفها لما يكون عندكم وقت. شقة 1204، كونتوسو هايتس.",
+      "response": "وعليكم السلام، شكراً لإبلاغنا. سننقل طلب الصيانة لفريق المختص، وسيتم التواصل معك لتأكيد موعد المعاينة في أقرب فرصة. شكراً لصبرك.",
+      "relevance": 4.0,
+      "relevance_reason": "The user reported a non-urgent dripping kitchen faucet and provided location details. The response acknowledges the issue, forwards it to maintenance, and promises contact to schedule an inspection. It directly addresses the request. Minor omissions include specifying a timeframe or confirming access/contact details.",
+      "coherence": 4.0,
+      "coherence_reason": "Let's think step by step: The query reports a non-urgent leaking kitchen faucet and provides the apartment details, asking for someone to check when possible. The response acknowledges the message, thanks the sender, and clearly outlines next steps: forwarding the request to the maintenance team and contacting the sender to schedule an inspection. The sentences are logically ordered—acknowledgment, action, and follow-up—and transitions are smooth. While it doesn’t restate the apartment details or reflect the “not urgent” nuance explicitly, these omissions affect completeness more than coherence. Overall, the response is clear, orderly, and easy to follow.",
+      "fluency": 4.0,
+      "fluency_reason": "Let's think step by step: The response is written in Arabic and communicates clearly and politely, with a professional tone suitable for customer service. It shows good control of grammar and cohesive flow: it acknowledges the message, explains the next steps, and closes with appreciation. Vocabulary is appropriate and varied enough for the context, and sentence structure includes coordination (وسيتم) that adds complexity. There is a minor grammatical issue with definiteness agreement in \"فريق المختص\" (more precise would be \"الفريق المختص\" or \"فريق مختص\"), but it does not impede understanding. Overall, the text is smooth and coherent, with only minor errors, aligning with a proficient level."
+    }
+  ],
+  "metrics": {
+    "relevance": 4.0,
+    "coherence": 4.0,
+    "fluency": 4.0
+  }
+}

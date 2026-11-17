@@ -1,0 +1,31 @@
+{
+  "rows": [
+    {
+      "id": "T01",
+      "query": "Water is pouring through my bathroom ceiling light right now, the floor is already flooded and it's spreading into the hallway. I think the flat upstairs has a burst pipe. Apartment 1507, Contoso Heights Tower A. Please send someone immediately!",
+      "response": "Thank you for reporting this urgent issue in apartment 1507. I have notified our maintenance team immediately. Someone will contact you shortly to confirm and assist. Please stay safe and avoid the affected area.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    },
+    {
+      "id": "T02",
+      "query": "السلام عليكم، حنفية المطبخ تنقط من كم يوم. مو مستعجل بس ياريت أحد يمر يشوفها لما يكون عندكم وقت. شقة 1204، كونتوسو هايتس.",
+      "response": "وعليكم السلام، شكرًا لإبلاغنا عن مشكلة الحنفية في شقتك. سنرسل لشخص من الصيانة ليتواصل معك لتحديد الوقت المناسب للفحص. شكراً لصبرك.",
+      "relevance": null,
+      "relevance_reason": null,
+      "coherence": null,
+      "coherence_reason": null,
+      "fluency": null,
+      "fluency_reason": null
+    }
+  ],
+  "metrics": {
+    "relevance": null,
+    "coherence": null,
+    "fluency": null
+  }
+}
