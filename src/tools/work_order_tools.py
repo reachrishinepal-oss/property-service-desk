@@ -1,6 +1,6 @@
 """
-PURPOSE: Two function tools on the mock work-order system (get_resident, create_ticket), the checks before they run, and the tool-call loop.
-LAYER:   Orchestration/Action
+PURPOSE: Two function tools on the mock work-order system (get_resident, create_ticket), rules search (file_search), the checks before tools run, and the tool-call loop.
+LAYER:   Orchestration/Action, Context/Retrieval (rules search)
 SESSION: S03
 """
 from __future__ import annotations
@@ -10,7 +10,7 @@ import time
 
 from mock_systems import work_orders
 from src.core.config import get_settings
-from src.core.foundry import get_openai_client
+from src.core.foundry import direct_openai_client
 from src.intelligence.resident_chat import load_system_message
 from src.intelligence.triage import CATEGORIES, URGENCIES
 
@@ -28,8 +28,8 @@ TOOLS = [
     {
         "type": "function",
         "name": "get_resident",
-        "description": "Look up who lives in a unit in the Contoso Living work-order system. "
-                       "Returns the resident's name and building only.",
+        "description": "Check that a unit exists in the Contoso Living work-order system. "
+                       "Returns the unit's building only, never who lives there.",
         "parameters": {
             "type": "object",
             "properties": {"unit": UNIT_PROPERTY},
@@ -64,10 +64,11 @@ def unknown_unit_error(unit: str) -> dict:
 
 
 def get_resident(unit: str) -> dict:
-    """Return the resident's name and building only (never rent, lease or payment details), or an error for an unknown unit."""
+    """Return the unit's building only (never a name, rent, lease or payment details), or an error for an unknown unit."""
     # AI-103 2.1.c: the app checks the argument against the work-order system before acting; strict makes it well formed, not true.
+    # Only the building goes back to the model: the chat has no sign-in, so it cannot know whose unit is being asked about.
     resident = work_orders.find_resident(unit.strip().upper())
-    return resident if resident else unknown_unit_error(unit)
+    return {"building": resident["building"]} if resident else unknown_unit_error(unit)
 
 
 def create_ticket(category: str, urgency: str, unit: str, summary: str) -> dict:
@@ -100,26 +101,50 @@ def run_tool_call(name: str, arguments: str, log: list[dict]) -> dict:
     return result
 
 
-def reply_with_tools(messages: list[dict]) -> tuple[str, list[dict], int]:
-    """Answer the resident, running any tool calls the model asks for. Returns the reply, the tool log and the input tokens."""
+def rules_search_tool(vector_store_id: str) -> dict:
+    """The file_search tool over the vector store with the community rules and the maintenance SLA."""
+    # AI-103 2.1.b: file_search runs in Microsoft's cloud: the model writes search queries, the service finds
+    # matching passages in the vector store, and the model answers from them.
+    return {"type": "file_search", "vector_store_ids": [vector_store_id]}
+
+
+def read_rules_searches(output: list) -> list[dict]:
+    """Collect the queries the model wrote and each retrieved passage (file name, score, first 200 characters)."""
+    searches = []
+    for item in output:
+        if item.type == "file_search_call":
+            passages = [{"file": result.filename, "score": round(result.score, 3), "text": result.text[:200]}
+                        for result in item.results or []]
+            searches.append({"queries": item.queries, "passages": passages})
+    return searches
+
+
+def reply_with_tools(messages: list[dict]) -> tuple[str, list[dict], list[dict], int]:
+    """Answer the resident, running any tool calls the model asks for. Returns the reply, the tool log, the rules searches and the input tokens."""
     settings = get_settings()
-    client = get_openai_client()
+    # The Azure OpenAI route, the same one that created the vector store (scripts/setup_rules_store.py).
+    client = direct_openai_client()
+    tools = TOOLS + ([rules_search_tool(settings.vector_store_id)] if settings.vector_store_id else [])
     conversation = list(messages)  # this turn's tool calls and outputs are added here, not to the saved chat
     log: list[dict] = []
+    searches: list[dict] = []
     input_tokens = 0
     for _ in range(MAX_ROUNDS):
-        # AI-103 2.1.c: send the tools with every call; tool_choice "auto" lets the model decide whether it needs one.
+        # AI-103 2.1.b, 2.1.c: the function tools and file_search go in one tools list on one call; tool_choice "auto"
+        # lets the model decide which, if any, it needs. include asks for the retrieved passages, so they can be shown.
         response = client.responses.create(
             model=settings.chat_deployment,
             instructions=load_system_message(),
             input=conversation,
-            tools=TOOLS,
+            tools=tools,
             tool_choice="auto",
+            include=["file_search_call.results"] if settings.vector_store_id else [],
         )
         input_tokens += response.usage.input_tokens
+        searches += read_rules_searches(response.output)
         calls = [item for item in response.output if item.type == "function_call"]
         if not calls:
-            return response.output_text, log, input_tokens
+            return response.output_text, log, searches, input_tokens
         conversation += response.output  # keep the model's requests so it can match the results to them
         for call in calls:
             # AI-103 2.1.c: the model never runs the function. The app runs it and sends the result back
@@ -127,4 +152,4 @@ def reply_with_tools(messages: list[dict]) -> tuple[str, list[dict], int]:
             result = run_tool_call(call.name, call.arguments, log)
             conversation.append({"type": "function_call_output", "call_id": call.call_id, "output": json.dumps(result)})
     return (f"Sorry, I could not finish this request: I stopped after {MAX_ROUNDS} rounds of tool calls. "
-            "Please try again.", log, input_tokens)
+            "Please try again.", log, searches, input_tokens)

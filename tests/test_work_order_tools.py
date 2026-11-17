@@ -1,5 +1,5 @@
 """
-PURPOSE: Prove the work-order tools check their arguments before acting: unknown unit, unknown label, empty summary.
+PURPOSE: Prove the work-order tools check their arguments before acting (unknown unit, unknown label, empty summary) and never return a name.
 LAYER:   Orchestration/Action
 SESSION: S03
 Run:     python -m unittest   (from the capstone folder; no Azure calls)
@@ -35,10 +35,8 @@ class WorkOrderToolTests(unittest.TestCase):
             self.assertEqual(db.execute("SELECT COUNT(*) FROM residents").fetchone()[0], 60)
         self.assertEqual(self.ticket_count(), 40)
 
-    def test_get_resident_returns_name_and_building_only(self):
-        result = get_resident("a-101")
-        self.assertEqual(set(result), {"name", "building"})
-        self.assertEqual(result["building"], "Contoso Heights A")
+    def test_get_resident_returns_the_building_and_no_name(self):
+        self.assertEqual(get_resident("a-101"), {"building": "Contoso Heights A"})
 
     def test_get_resident_unknown_unit_is_an_error(self):
         self.assertIn("error", get_resident("1204"))
