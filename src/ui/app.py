@@ -1,7 +1,7 @@
 """
 PURPOSE: The app's front door: a resident chats with the service desk, with a ticket preview panel beside the chat.
 LAYER:   Integration/Experience
-SESSION: S00 (resident chat page and ticket preview card from S02, tool calls and rules search from S03)
+SESSION: S00 (resident chat page and ticket preview card from S02, tool calls, rules search and the manager question from S03)
 Run:     streamlit run src/ui/app.py   (from the capstone folder, virtual environment active)
 """
 from __future__ import annotations
@@ -18,6 +18,7 @@ import streamlit as st  # noqa: E402
 
 from src.core.config import get_settings  # noqa: E402
 
+from src.tools.manager_analytics import TEST_QUESTION, ask_manager_question, built_in_check  # noqa: E402
 from src.tools.work_order_tools import reply_with_tools  # noqa: E402
 from src.intelligence.ticket_card import fill_ticket_card  # noqa: E402
 
@@ -64,6 +65,29 @@ try:
         st.info("Rules search is off: VECTOR_STORE_ID is missing")
 except RuntimeError as error:  # missing settings: show them plainly; the chat below reports the same on first use
     st.error(str(error))
+
+with st.sidebar:
+    st.header("Manager question (demo, no sign-in yet)")
+    question = st.text_area("Question about the tickets", value=TEST_QUESTION)
+    if st.button("Ask"):
+        try:
+            with st.spinner("The model is writing and running code..."):
+                st.session_state.manager = ask_manager_question(question)
+                st.session_state.manager_check = built_in_check(question)
+        except Exception as error:  # keep the page running and show the problem plainly
+            st.session_state.pop("manager", None)
+            st.error(f"The question could not be answered: {type(error).__name__}: {error}")
+    if "manager" in st.session_state:
+        st.markdown(st.session_state.manager["answer"])
+        st.caption(f"Input tokens: {st.session_state.manager['input_tokens']}")
+        with st.expander("Code the model ran"):
+            for code in st.session_state.manager["code"] or ["(no code was run)"]:
+                st.code(code, language="python")
+        st.subheader("Computed here")
+        if st.session_state.manager_check:
+            st.json(st.session_state.manager_check)
+        else:
+            st.caption("No built-in check for this question")
 
 chat_column, ticket_column = st.columns([3, 1])
 
