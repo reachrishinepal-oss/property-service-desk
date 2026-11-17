@@ -43,6 +43,8 @@ with ticket_column:
         st.caption(f"Input tokens for the card: {st.session_state.card_tokens}")
     else:
         st.caption("The triage card appears after the first reply.")
+    if st.session_state.get("card_failed"):
+        st.caption("The card was not updated this turn.")
 
 with chat_column:
     turn = 0
@@ -65,13 +67,16 @@ with chat_column:
                     result = {}
                     # write_stream shows each piece as it arrives and returns the whole reply when it ends.
                     reply = st.write_stream(stream_reply_to_resident(st.session_state.messages, result))
-            conversation = st.session_state.messages + [{"role": "assistant", "content": reply}]
-            with st.spinner("Updating the ticket preview..."):
-                card, card_tokens = fill_ticket_card(conversation)
-            st.session_state.messages = conversation
+            st.session_state.messages.append({"role": "assistant", "content": reply})
             st.session_state.input_tokens.append(result["input_tokens"])
-            st.session_state.card = card
-            st.session_state.card_tokens = card_tokens
+            try:
+                with st.spinner("Updating the ticket preview..."):
+                    card, card_tokens = fill_ticket_card(st.session_state.messages)
+                st.session_state.card = card
+                st.session_state.card_tokens = card_tokens
+                st.session_state.card_failed = False
+            except Exception:  # the reply is kept; only the card misses this turn, and the earlier card stays
+                st.session_state.card_failed = True
             st.rerun()
         except Exception as error:  # keep the page running and show the problem plainly
             st.session_state.messages.pop()  # drop the unanswered message so the conversation stays in step
