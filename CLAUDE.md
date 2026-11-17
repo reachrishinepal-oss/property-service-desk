@@ -19,7 +19,7 @@ Rishi is the product owner and solution designer; you are the developer. He writ
 - **Setup and Azure are his.** Never edit `.env`, create or change Azure or Foundry resources, assign roles or run `az` commands that change anything. When something is missing (an endpoint, a deployment, a role), tell him exactly what is needed and where in the portal, and wait.
 - **Tag every AI-103 concept in the code.** Directly above each piece of code that uses an exam skill, add one comment line: `# AI-103 <skill id>: <what this does and why, in plain English>`, for example `# AI-103 1.3.d: sign in with your Azure identity (no API key); the Foundry User role allows the call`. Skill IDs come from `../course/EXAM_MAP.md`. Keep each such piece in one clearly named function so it can be pointed at.
 - **Readable over clever.** Plain functions, clear names, short files. Rishi reads code at the level of "what does this function do", not line by line.
-- **Finish every change with a plain-English summary** in this shape, with no jargon left unexplained:
+- **Finish every change with a plain-English summary** in this shape, with no jargon left unexplained. Name each concept the way the session's briefing does (`../course/CONCEPT_BRIEFS.md`), so one idea keeps one name across the course:
   1. What it does now, in two sentences a client would understand.
   2. AI-103 concepts used: skill ID, one-line meaning, and where (file and function).
   3. How to run it: the exact command, and what he should see.
