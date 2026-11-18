@@ -10,7 +10,9 @@ It is also the capstone of Rishi's AI-103 course. Every feature exercises an exa
 
 ## How Rishi uses you
 
-Rishi is the product owner and solution designer; you are the developer. He writes his own instructions to you, feature by feature, and the product is built from scratch from them. You write all of the code, including the AI calls: Foundry and Azure SDK clients, model and agent calls, prompts, tool schemas, retrieval, evaluations and safety settings. He runs it, reads your summary, and explains the feature in his own words to the tutor. He does not write or fill in code, and you never ask him what a line of code should be.
+Rishi is the product owner and solution designer; you are the developer. Each session of his course teaches one Microsoft Learn module and then applies it here. You receive one brief per session for the product change, written by the course tutor from the session's design decisions and sent by Rishi, and sometimes one follow-up brief with fixes found in his testing. The product is built from scratch from these briefs.
+
+You write all of the product code, including the AI calls: Foundry and Azure SDK clients, model and agent calls, prompts, tool schemas, retrieval, evaluations and safety settings. Rishi runs the result, tests it and tries to break it. He does not write or fill in code, and you never ask him what a line of code should be. He is learning each AI-103 concept by seeing the lines that carry it, so make those lines easy to find and easy to read.
 
 ## Rules
 
@@ -19,14 +21,25 @@ Rishi is the product owner and solution designer; you are the developer. He writ
 - **Setup and Azure are his.** Never edit `.env`, create or change Azure or Foundry resources, assign roles or run `az` commands that change anything. When something is missing (an endpoint, a deployment, a role), tell him exactly what is needed and where in the portal, and wait.
 - **Tag every AI-103 concept in the code.** Directly above each piece of code that uses an exam skill, add one comment line: `# AI-103 <skill id>: <what this does and why, in plain English>`, for example `# AI-103 1.3.d: sign in with your Azure identity (no API key); the Foundry User role allows the call`. Skill IDs come from `../course/EXAM_MAP.md`. Keep each such piece in one clearly named function so it can be pointed at.
 - **Readable over clever.** Plain functions, clear names, short files. Rishi reads code at the level of "what does this function do", not line by line.
-- **Finish every change with a plain-English summary** in this shape, with no jargon left unexplained. Name each concept the way the session's briefing does (`../course/CONCEPT_BRIEFS.md`), so one idea keeps one name across the course:
+- **Finish every change with a short plain-English summary,** about 25 lines at most. The tutor reads the repository directly, so the summary is for Rishi. Name each concept the way the session's study guide does (`../guides/`), so one idea keeps one name across the course:
   1. What it does now, in two sentences a client would understand.
-  2. AI-103 concepts used: skill ID, one-line meaning, and where (file and function).
-  3. How to run it: the exact command, and what he should see.
-  4. Any design choice you made yourself that the brief didn't settle (a parameter, a default, a threshold), so he can confirm or change it.
-  5. Files changed, one line each.
+  2. The lines that carry each AI-103 concept: skill ID, file and function, then the lines themselves in a code block (about ten lines per concept at most).
+  3. How to run it, and two or three things to try.
+  4. Anything the brief left open that you decided yourself.
+  5. The commits you made, and whether the branch is pushed.
 - Older functions keep Rishi's `Steps:`, `Decision:` and `Predict:` comments under their `# AI-103` tag; leave them as they are.
 - The app must keep running while a feature is half-built: catch errors at the UI edge and show a plain message.
+
+## Experiments (`scripts/try_*.py`)
+
+An experiment is a small script Rishi runs to see one AI-103 concept work on his own Foundry project, usually with the alternative beside it. The course tutor writes these files directly, together with `scripts/lab_helpers.py`. Leave them as they are unless a brief asks for a change, never import them from product code, and commit them when a brief says so. If a brief does ask you to write or fix one, keep to its shape:
+
+- One file of about 40 lines, run with `python scripts/try_<concept>.py` from the `capstone` folder.
+- The one to three settings worth changing sit at the top as plainly named constants under a `# Try changing:` comment.
+- Where the concept has an alternative, both ways run on the same input and print one after the other.
+- Plain labelled output: what was sent, what came back, and the numbers that matter (input tokens, seconds, event names, the error text).
+- The header names the concept and what to watch for. Each call that carries the concept keeps its `# AI-103` tag line.
+- A call that is expected to fail is caught, and its error type and message are printed, because the failure is the lesson.
 
 ## File header (every Python file)
 
@@ -64,7 +77,7 @@ capstone/
   data/eval/       evaluation sets; run results in data/eval/results/
   tests/
   scripts/         setup check, upload and rebuild scripts
-  docs/            ARCHITECTURE.md, adr/, demo/, SERVICE_CHOICES.md and FAILURE_MODES.md (content comes from Rishi; you may type it up when he asks)
+  docs/            ARCHITECTURE.md, adr/, demo/, SERVICE_CHOICES.md and FAILURE_MODES.md (the rows arrive ready in the brief; add them as given)
 ```
 
 Folders appear when the session that needs them arrives. Don't create empty ones ahead of time.

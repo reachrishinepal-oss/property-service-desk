@@ -46,6 +46,18 @@ def main() -> None:
     print(f"Turn 2 reply: {turn2.output_text}")
     print(f"Turn 2 input tokens: {turn2.usage.input_tokens}")
 
+    # AI-103 2.1.a: responses.retrieve fetches a stored response again by its id.
+    again = client.responses.retrieve(turn1.id)
+    print(f"\nTurn 1 fetched again with responses.retrieve: {again.output_text}")
+
+    # store=False: the service keeps nothing, so there is no chain to continue from.
+    unsaved = client.responses.create(model=DEPLOYMENT, input="My unit is 1204.", store=False)
+    try:
+        client.responses.create(model=DEPLOYMENT, previous_response_id=unsaved.id, input="Which unit did I say?")
+        print("\nContinuing from a store=False response worked (not expected).")
+    except Exception as error:
+        print(f"\nContinuing from a store=False response failed: {type(error).__name__}: {str(error)[:200]}")
+
 
 if __name__ == "__main__":
     main()

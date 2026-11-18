@@ -7,3 +7,4 @@ azure-identity>=1.26.0
 azure-ai-projects>=2.8.0
 openai>=3.26.0
 azure-ai-evaluation>=1.18.8
+pandas>=2.3.3

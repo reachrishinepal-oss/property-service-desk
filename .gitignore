@@ -23,3 +23,6 @@ data/private/
 .vscode/settings.json
 .idea/
 .DS_Store
+
+# Mock work-order database (created by mock_systems/work_orders.py)
+mock_systems/*.db
