@@ -21,8 +21,9 @@ def ask_manager_question(question: str) -> dict:
     tickets_csv = pd.DataFrame(work_orders.read_tickets()).to_csv(index=False)
     instructions = (
         "You answer a property manager's questions about maintenance tickets for Contoso Living.\n"
-        "The tickets are in the CSV in the message. Columns: id, unit, category, urgency, summary, status, "
-        "created_at, closed_at. created_at and closed_at are ISO date-times; closed_at is empty for open tickets.\n"
+        "The tickets are in the CSV in the message. Columns: id, building, unit_number, category, urgency, summary, "
+        "status, created_at, closed_at. A unit is identified by building and unit_number together.\n"
+        "created_at and closed_at are ISO date-times; closed_at is empty for open tickets.\n"
         f"The current date and time is {datetime.now().isoformat(timespec='seconds')}.\n"
         "Use the python tool for every calculation. Do not work anything out in your head."
     )

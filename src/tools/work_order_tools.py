@@ -19,10 +19,18 @@ MAX_ROUNDS = 5
 # AI-103 2.1.c: two strict function tools. strict=True makes the model's arguments match the schema exactly, which needs
 # every property in "required" and additionalProperties false; enums hold category and urgency to the S01 labels.
 # No example values in any description: a forced call once copied an example unit from a description (FAILURE_MODES, S03).
-UNIT_PROPERTY = {
-    "type": "string",
-    "description": "The unit id: the building letter (A for Contoso Heights A, B for Contoso Heights B, "
-                   "G for Contoso Gardens), a hyphen, then the unit number the resident gave.",
+# A unit is two values, building and unit_number; the building is an enum, so the model picks a name and never decodes an id.
+UNIT_PROPERTIES = {
+    "building": {
+        "type": "string",
+        "enum": list(work_orders.BUILDINGS),
+        "description": "The building the resident lives in. Match what the resident says to one building; "
+                       "if more than one building could match, or none does, ask the resident instead of choosing.",
+    },
+    "unit_number": {
+        "type": "string",
+        "description": "The unit number exactly as the resident gave it, including any letters.",
+    },
 }
 TOOLS = [
     {
@@ -32,8 +40,8 @@ TOOLS = [
                        "Returns the unit's building only, never who lives there.",
         "parameters": {
             "type": "object",
-            "properties": {"unit": UNIT_PROPERTY},
-            "required": ["unit"],
+            "properties": UNIT_PROPERTIES,
+            "required": ["building", "unit_number"],
             "additionalProperties": False,
         },
         "strict": True,
@@ -42,16 +50,17 @@ TOOLS = [
         "type": "function",
         "name": "create_ticket",
         "description": "Raise a maintenance ticket in the Contoso Living work-order system. "
-                       "Use only once the unit and a clear description of the problem are known. Returns the ticket id.",
+                       "Use only once the building, the unit number and a clear description of the problem are known. "
+                       "Returns the ticket id.",
         "parameters": {
             "type": "object",
             "properties": {
                 "category": {"type": "string", "enum": list(CATEGORIES), "description": "The kind of problem."},
                 "urgency": {"type": "string", "enum": list(URGENCIES), "description": "How urgent the problem is."},
-                "unit": UNIT_PROPERTY,
+                **UNIT_PROPERTIES,
                 "summary": {"type": "string", "description": "One or two sentences describing the problem, in English."},
             },
-            "required": ["category", "urgency", "unit", "summary"],
+            "required": ["category", "urgency", "building", "unit_number", "summary"],
             "additionalProperties": False,
         },
         "strict": True,
@@ -59,31 +68,37 @@ TOOLS = [
 ]
 
 
-def unknown_unit_error(unit: str) -> dict:
-    return {"error": f"No unit '{unit}' in the work-order system. Ask the resident for their building and unit number."}
+def unknown_unit_error(building: str, unit_number: str) -> dict:
+    return {"error": f"No unit '{unit_number}' in {building} in the work-order system. "
+                     "Ask the resident to confirm their building and unit number."}
 
 
-def get_resident(unit: str) -> dict:
+def get_resident(building: str, unit_number: str) -> dict:
     """Return the unit's building only (never a name, rent, lease or payment details), or an error for an unknown unit."""
     # AI-103 2.1.c: the app checks the argument against the work-order system before acting; strict makes it well formed, not true.
     # Only the building goes back to the model: the chat has no sign-in, so it cannot know whose unit is being asked about.
-    resident = work_orders.find_resident(unit.strip().upper())
-    return {"building": resident["building"]} if resident else unknown_unit_error(unit)
+    # The pair (building, unit_number) is looked up exactly as given; nothing is split or decoded from text.
+    resident = work_orders.find_resident(building, unit_number.strip())
+    return {"building": resident["building"]} if resident else unknown_unit_error(building, unit_number)
 
 
-def create_ticket(category: str, urgency: str, unit: str, summary: str) -> dict:
+def create_ticket(category: str, urgency: str, building: str, unit_number: str, summary: str) -> dict:
     """Write a ticket and return its id, or return an error to the model instead of acting."""
     # AI-103 2.1.c: validate every argument before anything is written; an error goes back to the model to reason about.
-    unit = unit.strip().upper()
+    unit_number = unit_number.strip()
     if category not in CATEGORIES:
         return {"error": f"Unknown category '{category}'. Use one of: {', '.join(CATEGORIES)}."}
     if urgency not in URGENCIES:
         return {"error": f"Unknown urgency '{urgency}'. Use one of: {', '.join(URGENCIES)}."}
     if not summary.strip():
         return {"error": "The summary is empty. Ask the resident to describe the problem."}
-    if work_orders.find_resident(unit) is None:
-        return unknown_unit_error(unit)
-    return {"ticket_id": work_orders.insert_ticket(unit, category, urgency, summary.strip())}
+    if building not in work_orders.BUILDINGS:
+        return {"error": f"Unknown building '{building}'. Ask the resident which building they live in."}
+    if work_orders.find_resident(building, unit_number) is None:
+        return unknown_unit_error(building, unit_number)
+    ticket_id = work_orders.insert_ticket(building, unit_number, category, urgency, summary.strip())
+    # The building and unit go back with the id, so the reply can name them and the resident can correct a mistake.
+    return {"ticket_id": ticket_id, "building": building, "unit_number": unit_number}
 
 
 FUNCTIONS = {"get_resident": get_resident, "create_ticket": create_ticket}

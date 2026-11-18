@@ -36,22 +36,34 @@ class WorkOrderToolTests(unittest.TestCase):
         self.assertEqual(self.ticket_count(), 40)
 
     def test_get_resident_returns_the_building_and_no_name(self):
-        self.assertEqual(get_resident("a-101"), {"building": "Contoso Heights A"})
+        self.assertEqual(get_resident("Contoso Heights A", "101"), {"building": "Contoso Heights A"})
 
-    def test_get_resident_unknown_unit_is_an_error(self):
-        self.assertIn("error", get_resident("1204"))
+    def test_get_resident_unknown_pair_is_an_error(self):
+        self.assertIn("error", get_resident("Contoso Heights A", "1204"))
+        self.assertIn("error", get_resident("Contoso Gardens", "300A"))  # 300A exists, but only in Contoso Heights B
+
+    def test_similar_units_are_different_units(self):
+        create_ticket("plumbing", "urgent", "Contoso Arta 2", "300", "Leak under the sink.")
+        create_ticket("plumbing", "urgent", "Contoso Arta", "2300", "Leak under the sink.")
+        create_ticket("electrical", "urgent", "Contoso Heights B", "300", "No power.")
+        create_ticket("electrical", "urgent", "Contoso Heights B", "300A", "No power.")
+        with sqlite3.connect(self.db_path) as db:
+            new = db.execute("SELECT building, unit_number FROM tickets WHERE id > 40 ORDER BY id").fetchall()
+        self.assertEqual(new, [("Contoso Arta 2", "300"), ("Contoso Arta", "2300"),
+                               ("Contoso Heights B", "300"), ("Contoso Heights B", "300A")])
 
     def test_create_ticket_writes_a_row_and_returns_its_id(self):
-        result = create_ticket("plumbing", "urgent", "G-302", "Leak under the sink.")
-        self.assertEqual(result, {"ticket_id": 41})
+        result = create_ticket("plumbing", "urgent", "Contoso Gardens", "302", "Leak under the sink.")
+        self.assertEqual(result, {"ticket_id": 41, "building": "Contoso Gardens", "unit_number": "302"})
         self.assertEqual(self.ticket_count(), 41)
 
     def test_create_ticket_rejects_bad_arguments_without_writing(self):
         bad_calls = [
-            ("plumbing", "urgent", "1204", "Leak under the sink."),   # unknown unit
-            ("roofing", "urgent", "A-101", "Leak under the sink."),   # unknown category
-            ("plumbing", "asap", "A-101", "Leak under the sink."),    # unknown urgency
-            ("plumbing", "urgent", "A-101", "   "),                   # empty summary
+            ("plumbing", "urgent", "Contoso Arta", "300", "Leak under the sink."),     # unknown pair
+            ("plumbing", "urgent", "Contoso Tower", "101", "Leak under the sink."),    # unknown building
+            ("roofing", "urgent", "Contoso Heights A", "101", "Leak under the sink."), # unknown category
+            ("plumbing", "asap", "Contoso Heights A", "101", "Leak under the sink."),   # unknown urgency
+            ("plumbing", "urgent", "Contoso Heights A", "101", "   "),                 # empty summary
         ]
         for arguments in bad_calls:
             with self.subTest(arguments=arguments):
