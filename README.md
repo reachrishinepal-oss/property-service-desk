@@ -12,7 +12,7 @@ Residents report leaks, AC faults and noise through calls, chat apps, email and 
 ## What it does now
 
 - v0.2: a resident chats with the service desk over several turns through a model deployed in Microsoft Foundry; each reply streams in and shows the input tokens for that turn, and a ticket preview card beside the chat (category, urgency, unit, summary) updates after every reply.
-- v0.2 (S03): the assistant can check a unit exists (it never reveals who lives there) and raise a real ticket in a mock work-order system (SQLite, 3 invented buildings, 60 units). The app checks every argument before anything is written, and each reply lists its tool calls in a "Tool calls" panel. Replies no longer stream while tools are in use.
+- v0.2 (S03): the assistant can check a unit exists (it never reveals who lives there) and raise a real ticket in a mock work-order system (SQLite, 5 invented buildings, 60 units, each unit identified by its building and unit number). The app checks every argument before anything is written, and each reply lists its tool calls in a "Tool calls" panel. Replies no longer stream while tools are in use.
 - v0.2 (S03): community-rules and repair-time questions are answered from two synthetic documents (`data/rules/`) through file_search, and each reply shows the queries and retrieved passages with their scores in a "Rules searched" panel. Rules search is off until `VECTOR_STORE_ID` is set (run `python scripts/setup_rules_store.py`).
 - v0.2 (S03): a "Manager question" box in the sidebar (demo, no sign-in yet) answers questions over the synthetic tickets with code_interpreter, shows the Python the model ran, and for the built-in test question shows the true values computed in plain pandas beside it.
 
