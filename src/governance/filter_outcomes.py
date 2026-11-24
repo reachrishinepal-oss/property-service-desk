@@ -1,7 +1,7 @@
 """
 PURPOSE: Turn the guardrail's two outcomes (filtered prompt, filtered completion) and a length cut into a plain stop with a message for the resident, and log each event.
 LAYER:   Security/Controls
-SESSION: S04
+SESSION: S04 (self-harm fallback added in S04 follow-up 1)
 """
 from __future__ import annotations
 
@@ -14,6 +14,12 @@ import openai
 SAFETY_FALLBACK = (
     "I can't help with that message here. If anyone is hurt or in danger, call the building's emergency line "
     "or the emergency services right away. Otherwise, please rephrase and tell me your building and unit number."
+)
+# The tutor's wording, for a verdict that shows self-harm. No phone number: the app does not know a local helpline.
+SELF_HARM_FALLBACK = (
+    "I'm really sorry you're going through this. I can't help with this in this chat, but you don't have to face it alone. "
+    "If you are in danger or have hurt yourself, call the emergency services right now. Please also reach out to someone "
+    "you trust, or to a doctor or a mental health service near you."
 )
 LENGTH_MESSAGE = "My reply was cut off because it reached its length limit. Please ask again in a shorter way."
 
@@ -39,6 +45,17 @@ def severities(filters: list | None) -> str:
     return "; ".join(parts) or "none given"
 
 
+def safety_fallback(filters: list | None) -> str:
+    """Choose the resident's message: the self-harm fallback if the verdict shows self_harm above safe, else the general one."""
+    # AI-103 1.4.a: the guardrail's verdict gives a severity per category for the prompt and the completion;
+    # self_harm above 'safe' on either one gets a caring message instead of the general fallback.
+    for part in filters or []:
+        severity = part.get("content_filter_results", {}).get("self_harm", {}).get("severity")
+        if severity and severity != "safe":
+            return SELF_HARM_FALLBACK
+    return SAFETY_FALLBACK
+
+
 def log_event(kind: str, code: str, filters: list | None) -> None:
     """Print one log line per event: kind, code, time and the per-category severities."""
     print(f"[filter] kind={kind} code={code} time={datetime.now():%Y-%m-%d %H:%M:%S} severities={severities(filters)}")
@@ -57,7 +74,7 @@ def call_with_filter_check(create: Callable[[], object]):
         inner = (body.get("innererror") or {}).get("content_filter_result")  # the older Azure shape of the same verdict
         filters = body.get("content_filters") or ([{"source_type": "prompt", "content_filter_results": inner}] if inner else None)
         log_event("prompt_blocked", "content_filter", filters)
-        raise FilterStop("prompt_blocked", SAFETY_FALLBACK) from error
+        raise FilterStop("prompt_blocked", safety_fallback(filters)) from error
     # AI-103 1.4.a: a filtered completion: HTTP 200, but status is incomplete with reason content_filter (the reply was cut).
     # Reason max_output_tokens is not a safety event: it is a length problem, and a cut reply is never proof it was safe.
     if getattr(response, "status", None) == "incomplete":
@@ -65,7 +82,7 @@ def call_with_filter_check(create: Callable[[], object]):
         filters = (getattr(response, "model_extra", None) or {}).get("content_filters")
         if reason == "content_filter":
             log_event("reply_cut", reason, filters)
-            raise FilterStop("reply_cut", SAFETY_FALLBACK)
+            raise FilterStop("reply_cut", safety_fallback(filters))
         log_event("length", str(reason), filters)
         raise FilterStop("length", LENGTH_MESSAGE)
     return response
