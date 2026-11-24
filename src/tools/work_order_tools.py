@@ -1,7 +1,7 @@
 """
 PURPOSE: Two function tools on the mock work-order system (get_resident, create_ticket), rules search (file_search), the checks before tools run, and the tool-call loop.
 LAYER:   Orchestration/Action, Context/Retrieval (rules search)
-SESSION: S03
+SESSION: S03 (guardrail outcomes checked on every call in S04)
 """
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ import time
 from mock_systems import work_orders
 from src.core.config import get_settings
 from src.core.foundry import direct_openai_client
+from src.governance.filter_outcomes import call_with_filter_check
 from src.intelligence.resident_chat import load_system_message
 from src.intelligence.triage import CATEGORIES, URGENCIES
 
@@ -134,12 +135,16 @@ def read_rules_searches(output: list) -> list[dict]:
     return searches
 
 
-def reply_with_tools(messages: list[dict]) -> tuple[str, list[dict], list[dict], int]:
-    """Answer the resident, running any tool calls the model asks for. Returns the reply, the tool log, the rules searches and the input tokens."""
+def reply_with_tools(messages: list[dict], vector_store_id: str | None = None) -> tuple[str, list[dict], list[dict], int]:
+    """Answer the resident, running any tool calls the model asks for. Returns the reply, the tool log, the rules searches and the input tokens.
+
+    vector_store_id replaces the rules store from .env (the red-team run uses it for a poisoned copy).
+    Raises FilterStop when a guardrail or a length limit stopped a call; the caller shows its message."""
     settings = get_settings()
+    store_id = vector_store_id or settings.vector_store_id
     # The Azure OpenAI route, the same one that created the vector store (scripts/setup_rules_store.py).
     client = direct_openai_client()
-    tools = TOOLS + ([rules_search_tool(settings.vector_store_id)] if settings.vector_store_id else [])
+    tools = TOOLS + ([rules_search_tool(store_id)] if store_id else [])
     conversation = list(messages)  # this turn's tool calls and outputs are added here, not to the saved chat
     log: list[dict] = []
     searches: list[dict] = []
@@ -147,14 +152,15 @@ def reply_with_tools(messages: list[dict]) -> tuple[str, list[dict], list[dict],
     for _ in range(MAX_ROUNDS):
         # AI-103 2.1.b, 2.1.c: the function tools and file_search go in one tools list on one call; tool_choice "auto"
         # lets the model decide which, if any, it needs. include asks for the retrieved passages, so they can be shown.
-        response = client.responses.create(
+        # AI-103 1.4.a: every call goes through the filter check, so a blocked prompt or a cut reply becomes a FilterStop.
+        response = call_with_filter_check(lambda: client.responses.create(
             model=settings.chat_deployment,
             instructions=load_system_message(),
             input=conversation,
             tools=tools,
             tool_choice="auto",
-            include=["file_search_call.results"] if settings.vector_store_id else [],
-        )
+            include=["file_search_call.results"] if store_id else [],
+        ))
         input_tokens += response.usage.input_tokens
         searches += read_rules_searches(response.output)
         calls = [item for item in response.output if item.type == "function_call"]

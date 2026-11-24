@@ -1,7 +1,8 @@
 """
 PURPOSE: The app's front door: a resident chats with the service desk, with a ticket preview panel beside the chat.
 LAYER:   Integration/Experience
-SESSION: S00 (resident chat page and ticket preview card from S02, tool calls, rules search and the manager question from S03)
+SESSION: S00 (resident chat page and ticket preview card from S02, tool calls, rules search and the manager question from S03,
+         guardrail outcomes shown as a plain fallback from S04)
 Run:     streamlit run src/ui/app.py   (from the capstone folder, virtual environment active)
 """
 from __future__ import annotations
@@ -17,6 +18,7 @@ if str(REPO_ROOT) not in sys.path:
 import streamlit as st  # noqa: E402
 
 from src.core.config import get_settings  # noqa: E402
+from src.governance.filter_outcomes import FilterStop  # noqa: E402
 
 from src.tools.manager_analytics import TEST_QUESTION, ask_manager_question, built_in_check  # noqa: E402
 from src.tools.work_order_tools import reply_with_tools  # noqa: E402
@@ -97,13 +99,14 @@ with ticket_column:
     if card:
         st.markdown(
             f"**Category:** {card['category']}  \n**Urgency:** {card['urgency']}  \n"
-            f"**Unit:** {card['unit']}  \n**Summary:** {card['summary']}"
+            f"**Building:** {card.get('building', 'unknown')}  \n**Unit number:** {card.get('unit_number', card.get('unit'))}  \n"
+            f"**Summary:** {card['summary']}"
         )
         st.caption(f"Input tokens for the card: {st.session_state.card_tokens}")
     else:
         st.caption("The triage card appears after the first reply.")
     if st.session_state.get("card_failed"):
-        st.caption("The card was not updated this turn.")
+        st.caption(st.session_state.get("card_note") or "The card was not updated this turn.")
 
 with chat_column:
     turn = 0
@@ -130,7 +133,12 @@ with chat_column:
                 with st.chat_message("assistant"):
                     # Tool turns do not stream: the app may run functions between model calls, so the reply comes whole.
                     with st.spinner("Looking that up..."):
-                        reply, tool_log, searches, input_tokens = reply_with_tools(st.session_state.messages)
+                        try:
+                            reply, tool_log, searches, input_tokens = reply_with_tools(st.session_state.messages)
+                        except FilterStop as stop:  # a guardrail or a length limit stopped the reply: show its plain message
+                            reply, tool_log, searches, input_tokens = stop.message, [], [], 0
+                            if stop.safety:  # do not resend the stopped message, or every later turn is blocked too
+                                st.session_state.messages[-1]["content"] = "(message not kept: stopped by the safety filter)"
             st.session_state.messages.append({"role": "assistant", "content": reply})
             st.session_state.input_tokens.append(input_tokens)
             st.session_state.tool_logs.append(tool_log)
@@ -141,8 +149,12 @@ with chat_column:
                 st.session_state.card = card
                 st.session_state.card_tokens = card_tokens
                 st.session_state.card_failed = False
+            except FilterStop as stop:  # the guardrail stopped the card call: keep the earlier card and say why
+                st.session_state.card_failed = True
+                st.session_state.card_note = f"The card was not updated: {stop.message}"
             except Exception:  # the reply is kept; only the card misses this turn, and the earlier card stays
                 st.session_state.card_failed = True
+                st.session_state.card_note = None
             st.rerun()
         except Exception as error:  # keep the page running and show the problem plainly
             st.session_state.messages.pop()  # drop the unanswered message so the conversation stays in step
