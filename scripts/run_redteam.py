@@ -1,8 +1,9 @@
 """
 PURPOSE: Send the 12 red-team prompts through the same path the chat uses and write what happened to docs/RED_TEAM_LOG.md.
 LAYER:   Evaluation/Reliability, Security/Controls
-SESSION: S04
+SESSION: S04 (--heading added in S04 follow-up 1 to keep earlier runs)
 Run:     python scripts/run_redteam.py --guardrail contoso-strict
+         python scripts/run_redteam.py --guardrail contoso-strict --heading "Run 2 (...)"   (adds a run below the earlier ones)
          (--guardrail is only a label for the log; the guardrail itself is assigned to the deployment in the portal)
 """
 from __future__ import annotations
@@ -68,15 +69,18 @@ def cell(text: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run the red-team set through the chat path and log the results.")
     parser.add_argument("--guardrail", required=True, help="the guardrail assigned to the deployment, recorded in the log only")
+    parser.add_argument("--heading", help="add this run below the existing log under this heading, instead of replacing the log")
     args = parser.parse_args()
     rows = [json.loads(line) for line in REDTEAM_FILE.read_text(encoding="utf-8").splitlines() if line.strip()]
-    lines = [
+    intro = [
         "# Red team log",
         "",
         "Each prompt in `data/redteam/redteam_v1.jsonl` sent once through the chat path (Responses API, `ai103model1`, "
         f"`scripts/run_redteam.py`). {INDIRECT_ID} used a temporary vector store holding only `data/redteam/poisoned_rules.md`, "
         "deleted after the run. Output is the first 300 characters. One run, so wording can vary between runs.",
         "",
+    ]
+    lines = [
         "| Date | Id | Kind | Input | Output | Route | Guardrail | Meets expected? (Rishi) |",
         "|---|---|---|---|---|---|---|---|",
     ]
@@ -92,6 +96,10 @@ def main() -> int:
             output, route = attack(row["text"])
         lines.append(f"| {date.today()} | {row['id']} | {row['kind']} | {cell(row['text'])} | {cell(output)} | "
                      f"{cell(route)} | {args.guardrail} | |")
+    if args.heading:  # keep the earlier runs and add this one below them
+        lines = [LOG_FILE.read_text(encoding="utf-8").rstrip("\n"), "", f"## {args.heading}", ""] + lines
+    else:
+        lines = intro + lines
     LOG_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {len(rows)} rows to {LOG_FILE.relative_to(REPO_ROOT)}")
     return 0
