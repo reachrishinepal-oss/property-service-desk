@@ -1,7 +1,7 @@
 """
 PURPOSE: Run the triage evaluation set against model deployments, score the answers and save the results.
 LAYER:   Evaluation/Reliability
-SESSION: S01
+SESSION: S01 (choice of prompt v1 or v2 and of the eval file added in S04)
 """
 from __future__ import annotations
 
@@ -102,6 +102,11 @@ def summarise(records: list[dict]) -> dict:
     }
 
 
+def classifier_for(prompt: str) -> Classify:
+    """Return a classify function that uses triage prompt v1 or v2; the call is otherwise the same."""
+    return lambda deployment, text: classify_request(deployment, text, prompt=prompt)
+
+
 def run_eval(
     rows: list[dict],
     deployments: list[str],
@@ -121,11 +126,11 @@ def run_eval(
     return {"records": records, "summary": summary}
 
 
-def write_results(records: list[dict], results_dir: str | Path = DEFAULT_RESULTS_DIR) -> Path:
-    """Write one JSONL line per (deployment, row) to results_dir/run_YYYYMMDD_HHMMSS.jsonl."""
+def write_results(records: list[dict], results_dir: str | Path = DEFAULT_RESULTS_DIR, tag: str = "") -> Path:
+    """Write one JSONL line per (deployment, row) to results_dir/run_YYYYMMDD_HHMMSS[_tag].jsonl."""
     out_dir = Path(results_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"run_{datetime.now():%Y%m%d_%H%M%S}.jsonl"
+    path = out_dir / f"run_{datetime.now():%Y%m%d_%H%M%S}{'_' + tag if tag else ''}.jsonl"
     with path.open("w", encoding="utf-8") as handle:
         for record in records:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
