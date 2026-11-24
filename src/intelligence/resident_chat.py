@@ -1,7 +1,7 @@
 """
 PURPOSE: Send the whole resident conversation to the chat deployment and stream the reply back, with its input tokens at the end.
 LAYER:   Intelligence
-SESSION: S02
+SESSION: S02 (the shared triage policy added to the system message in S04)
 """
 from __future__ import annotations
 
@@ -10,14 +10,17 @@ from pathlib import Path
 
 from src.core.config import get_settings
 from src.core.foundry import get_openai_client
+from src.intelligence.triage import load_triage_policy
 
 SYSTEM_MESSAGE_FILE = Path(__file__).with_name("resident_system_message.md")
 
 
 def load_system_message() -> str:
-    """Read the service desk's system message from its own file."""
+    """Read the service desk's system message from its own file, followed by the shared triage policy."""
     # AI-103 2.3.a: the system message (the rules the assistant follows) lives in one small file so it can be read and changed on its own.
-    return SYSTEM_MESSAGE_FILE.read_text(encoding="utf-8")
+    # The urgency and category rules come from the shared triage policy, so the chat, the card and triage agree.
+    policy = load_triage_policy()
+    return SYSTEM_MESSAGE_FILE.read_text(encoding="utf-8").rstrip() + f"\n\nTriage policy:\n{policy}\n"
 
 
 def stream_reply_to_resident(messages: list[dict], result: dict) -> Iterator[str]:
